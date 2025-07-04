@@ -1,0 +1,58 @@
+name: private_ami  # ✏️ Optional: Change this to something descriptive like "Build Startup AMI"
+
+on:
+  release:
+    types: [published]  # ✅ Triggers on new GitHub releases. Leave as-is unless you want a different trigger
+
+env:
+  AWS_REGION: "eu-west-1"  # ✏️ Optional: Change this to your AWS region if different
+  PACKER_VERSION: "1.11.2"  # ✅ Leave unless you want a different Packer version
+
+jobs:
+  build_image:
+    name: packer build
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      # Step 1 - Checkout Repository
+      - name: Repository Checkout
+        uses: actions/checkout@v4
+
+      # Step 2 - Install packer
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: ${{ env.PACKER_VERSION }}
+
+      # Step 3 - Packer init
+      - name: Run `packer init`
+        id: init
+        run: "packer init ./image.pkr.hcl"  # ✏️ If your Packer file is in a different location, update the path
+
+      # Step 4 - Setup AWS CLI
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE_ARN }}  # ✅ You MUST define this in GitHub Secrets
+          aws-region: ${{ env.AWS_REGION }}
+
+      # ➕ Optional Step - Save secrets.sh (ADD THIS if you want your secrets in the AMI)
+      - name: Save secrets to secrets.sh
+        run: |
+          echo "#!/bin/bash" > $GITHUB_WORKSPACE/secrets.sh
+          echo "export SECRET_KEY='${{ secrets.SECRET_KEY }}'" >> $GITHUB_WORKSPACE/secrets.sh
+          echo "export DB_USER='${{ secrets.DB_USER }}'" >> $GITHUB_WORKSPACE/secrets.sh
+          echo "export DB_PASSWORD='${{ secrets.DB_PASSWORD }}'" >> $GITHUB_WORKSPACE/secrets.sh
+
+      # Step 5 - Packer build
+      - name: Run `packer build`
+        run: packer build -color=false -on-error=abort \
+          -var "vpc_id=${{ secrets.VPC_ID }}" \      # ✅ Define this secret in GitHub (your VPC ID)
+          -var "subnet_id=${{ secrets.SUBNET_ID }}" \# ✅ Define this secret in GitHub (your subnet ID)
+          -var "version=${{ github.ref_name }}" \    # ✅ Uses GitHub release tag as AMI version
+          ./image.pkr.hcl
