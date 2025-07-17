@@ -1,6 +1,8 @@
-name: Build Custom AMI  # ✅ Change this to your preferred workflow name
+name: ami-build  # ✅ Change this to your preferred workflow name
 
 on:
+  push:
+    brnaches:[main]
   release:
     types: [published]  # ✅ Trigger this workflow when a new GitHub release is published
 
