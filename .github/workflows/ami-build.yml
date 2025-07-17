@@ -5,7 +5,7 @@ on:
     types: [published]  # ✅ Trigger this workflow when a new GitHub release is published
 
 env:
-  AWS_REGION: "eu-west-1"       # ✅ Update if your AWS region is different
+  AWS_REGION: "eu-west-1"       # ✅ Update if  your AWS region is different
   PACKER_VERSION: "1.11.2"      # ✅ You can upgrade if a newer version is available
 
 jobs:
