@@ -2,7 +2,7 @@ name: ami-build  # ✅ Change this to your preferred workflow name
 
 on:
   release:
-    types:[published]  # ✅ Trigger this workflow when a new GitHub release is published
+    types: [published]  # ✅ Trigger this workflow when a new GitHub release is published
 
 env:
   AWS_REGION: "eu-west-1"       # ✅ Update if  your AWS region is different
