@@ -2,7 +2,7 @@ name: ami-build  # ✅ Change this to your preferred workflow name
 
 on:
   push:
-    brnaches:[main]
+    branches:[main]
   release:
     types: [published]  # ✅ Trigger this workflow when a new GitHub release is published
 
