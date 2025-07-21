@@ -32,7 +32,8 @@ jobs:
       - name: Run `packer init`
         id: init
         run: packer init ./image.pkr.hcl  
-        PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
       # Step 4 - Setup AWS credentials using OIDC
