@@ -59,7 +59,7 @@ locals {
 source "amazon-ebs" "ubuntu" {
   ami_name      = "${local.ami_name}-${var.version}"
   instance_type = "t2.micro"
-  region        = "eu-west-1"
+  region        = "eu-west-2"
   source_ami_filter {
     filters = {
       name                = local.source_ami_name
