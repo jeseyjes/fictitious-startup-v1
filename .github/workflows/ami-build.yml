@@ -6,11 +6,7 @@ on:
 
 env:
   PACKER_VERSION: "1.11.2"
-<<<<<<< HEAD
   AWS_REGION: "us-west-1"
-=======
-  AWS_REGION: "us-west-1"   
->>>>>>> 43887ac (Initial commit)
   
 jobs:
   build:
@@ -35,13 +31,9 @@ jobs:
       # Step 3 - Packer init
       - name: Run `packer init`
         id: init
-<<<<<<< HEAD
         run: packer init ./image.pkr.hcl  
-=======
-        run: packer init ./image.pkr.hcl 
-        env:
-          PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
->>>>>>> 43887ac (Initial commit)
+        PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
       # Step 4 - Setup AWS credentials using OIDC
       - name: Configure AWS credentials
