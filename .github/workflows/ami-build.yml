@@ -5,7 +5,8 @@ on:
     types: [published]
 
 env:
-  PACKER_VERSION: "1.11.2"   
+  PACKER_VERSION: "1.11.2"
+  AWS_REGION: "us-west-1"
   
 jobs:
   build:
