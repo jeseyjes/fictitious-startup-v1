@@ -31,13 +31,13 @@ jobs:
       # Step 3 - Packer init
       - name: Run `packer init`
         id: init
-        run: packer init ./image.pkr.hcl  # ✅ Update path if your file is elsewhere
+        run: packer init ./image.pkr.hcl  
 
       # Step 4 - Setup AWS credentials using OIDC
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.IAM_ROLE_ARN }}  # ✅ Make sure this secret is defined
+          role-to-assume: ${{ secrets.IAM_ROLE_ARN }} 
           aws-region: ${{ env.AWS_REGION }}
 
       
